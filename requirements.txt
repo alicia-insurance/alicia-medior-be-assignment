@@ -1,2 +1,5 @@
+black
 Django>=4.2,<4.3
 djangorestframework
+flake8
+isort

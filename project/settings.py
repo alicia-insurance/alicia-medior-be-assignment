@@ -2,6 +2,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+BASE_URL = "http://127.0.0.1:8000"
+
 SECRET_KEY = "your_secret_key"
 
 DEBUG = True
@@ -65,3 +67,14 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '50/hour',
+        'anon': '5/minute',
+    },
+}
