@@ -24,10 +24,5 @@ class ShortenedURL(models.Model):
         base_url = settings.BASE_URL
         return f"{base_url}/api/short/{self.custom_alias or self.short_code}"
 
-    def increment_access_count(self):
-        """Increments the access count when the link is visited"""
-        self.access_count += 1
-        self.save(update_fields=["access_count"])
-
     def __str__(self):
         return f"{self.original_url} -> {self.get_short_url()}"

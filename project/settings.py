@@ -68,13 +68,14 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+# Used the throttling built into DRF for rate limiting
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.UserRateThrottle',
         'rest_framework.throttling.AnonRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'user': '50/hour',
-        'anon': '5/minute',
+        'user': '100/hour',
+        'anon': '10/minute',
     },
 }

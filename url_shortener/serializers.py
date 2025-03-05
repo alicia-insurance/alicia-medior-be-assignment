@@ -18,11 +18,3 @@ class ShortenedURLSerializer(serializers.ModelSerializer):
             "access_count",
         ]
         read_only_fields = ["short_code", "short_url", "created_at", "access_count"]
-
-    def validate_custom_alias(self, value):
-        """Check if the custom alias is already taken."""
-        if value and ShortenedURL.objects.filter(custom_alias=value).exists():
-            raise serializers.ValidationError(
-                "This custom alias is already taken. Please choose another one."
-            )
-        return value

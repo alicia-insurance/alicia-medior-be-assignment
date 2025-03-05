@@ -58,7 +58,6 @@ def generate_unique_short_code(custom_alias=None):
     return short_code
 
 
-# API view to shorten a URL
 @api_view(['POST'])
 def shorten_url(request):
     """
@@ -107,13 +106,11 @@ def shorten_url(request):
     )
     shortened_url.save()
 
-    # Return the short URL in the response
     return Response(
         ShortenedURLSerializer(shortened_url).data, status=status.HTTP_201_CREATED
     )
 
 
-# API view to redirect to the original URL using the short code
 @api_view(['GET'])
 def redirect_url(request, short_code):
     """
@@ -151,7 +148,6 @@ def get_url_stats(request, short_code):
     """
     shortened_url = get_object_or_404(ShortenedURL, short_code=short_code)
 
-    # Return stats as JSON
     stats = {
         'short_code': shortened_url.short_code,
         'original_url': shortened_url.original_url,
