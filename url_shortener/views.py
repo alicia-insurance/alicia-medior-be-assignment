@@ -51,7 +51,7 @@ def generate_unique_short_code(custom_alias=None):
     # Generate a random short code if no custom alias is provided
     short_code = generate_short_code()
 
-    # Ensure the short code is unique
+    # Ensure the random short code is unique
     while ShortenedURL.objects.filter(short_code=short_code).exists():
         short_code = generate_short_code()
 
@@ -73,9 +73,7 @@ def shorten_url(request):
         Response: A response containing the shortened URL or an error message.
     """
     original_url = request.data.get('original_url')
-    custom_alias = request.data.get(
-        'custom_alias', None
-    )  # Get the custom alias if provided
+    custom_alias = request.data.get('custom_alias', None)
 
     if not original_url:
         return Response(
@@ -126,7 +124,7 @@ def redirect_url(request, short_code):
     """
     shortened_url = get_object_or_404(ShortenedURL, short_code=short_code)
 
-    # Update the access count (if stats are tracked)
+    # Update the access count
     shortened_url.access_count += 1
     shortened_url.save()
 
