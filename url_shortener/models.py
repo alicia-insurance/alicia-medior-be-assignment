@@ -23,6 +23,7 @@ def generate_short_code(url):
 
 
 class ShortenedUrl(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="urls")
     created_at = models.DateTimeField(auto_now_add=True)
     original_url = models.URLField(unique=False, max_length=2048)
     short_code = models.CharField(max_length=10, unique=True, blank=True)
@@ -36,3 +37,9 @@ class ShortenedUrl(models.Model):
 
     def __str__(self):
         return f"{self.short_code} -> {self.original_url}"
+
+class User(models.Model):
+    id = models.UUIDField(primary_key=True)
+    email = models.EmailField()
+    first_name = models.CharField()
+    last_name = models.CharField()
