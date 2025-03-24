@@ -91,3 +91,28 @@ After submission, we may ask you some questions, such as:
 
 ## Good Luck & Have Fun!
 Happy coding! 😃 If you have any questions, feel free to reach out.
+
+## Setup guide
+- clone the repo using the following command:
+    > git clone https://github.com/ashkar-yoosuf/alicia-medior-be-assignment.git
+- Go to the project folder using the following command:
+    > cd alicia-medior-be-assignment/
+- Execute the following commands in the given order to get the app up and running (may need superuser permission):
+    > docker-compose build --no-cache<br>
+    docker-compose up -d
+
+## Test execution
+- Execute the following command to run general tests on URL shortener
+    > docker-compose exec -e DJANGO_SETTINGS_MODULE=project.test_settings web python manage.py test url_shortener.tests.URLShortenerTests
+- Execute the following command to run the rate limiter test for URL shortener
+    > docker-compose exec web python manage.py test url_shortener.tests.URLShortenerRateLimitTests
+
+## Links
+[Postman Collection](https://api.postman.com/collections/9054429-dcd48090-ca5c-4f96-a25b-e9cd61bee42e?access_key=PMAT-01JQ350S4Y02ZJKM7MJ6QYQ0SZ)<br>
+[API doc](https://docs.google.com/document/d/19lGO9b5G-X5OBucAQ_NEjgynVJA7ovEuRbhbHVmM7uI/edit?usp=sharing)
+
+## Notes
+- Use the following command to stop the app (may need superuser permission):
+    > docker-compose down
+- Use the following command to run the unit tests (may need superuser permission):
+    > docker-compose run web python manage.py test
