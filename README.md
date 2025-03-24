@@ -114,5 +114,3 @@ Happy coding! 😃 If you have any questions, feel free to reach out.
 ## Notes
 - Use the following command to stop the app (may need superuser permission):
     > docker-compose down
-- Use the following command to run the unit tests (may need superuser permission):
-    > docker-compose run web python manage.py test
