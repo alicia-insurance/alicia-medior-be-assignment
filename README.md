@@ -95,6 +95,8 @@ Happy coding! 😃 If you have any questions, feel free to reach out.
 ## Setup guide
 - clone the repo using the following command:
     > git clone https://github.com/ashkar-yoosuf/alicia-medior-be-assignment.git
+- Checkout to dev branch:
+    > git checkout dev
 - Go to the project folder using the following command:
     > cd alicia-medior-be-assignment/
 - Execute the following commands in the given order to get the app up and running (may need superuser permission):
