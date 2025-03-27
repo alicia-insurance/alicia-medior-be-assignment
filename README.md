@@ -34,14 +34,14 @@ Certainly! Below are the sample `curl` commands for each endpoint you can add to
 ```bash
 curl -X POST http://localhost:8000/api/shorten/ \
     -H "Content-Type: application/json" \
-    -d '{"original_url": "https://www.example.com", "custom_code": "mycustomcode"}'
+    -d '{"original_url": "https://www.google.com", "custom_code": "customcode"}'
 ```
 
 - **Description**: Submit a long URL and optionally provide a custom short code. The response will return a shortened URL.
 - **Expected Response**:
     ```json
     {
-        "short_url": "http://localhost:8000/short/mycustomcode"
+        "short_url": "http://localhost:8000/short/customcode"
     }
     ```
 
@@ -50,18 +50,18 @@ curl -X POST http://localhost:8000/api/shorten/ \
 ### 2. **Redirect to the Original Long URL** (`GET /short/<short_code>/`)
 
 ```bash
-curl -X GET http://localhost:8000/short/mycustomcode/
+curl -X GET http://localhost:8000/short/customcode/
 ```
 
 - **Description**: Redirect to the original long URL using the provided short code.
-- **Expected Response**: You will be redirected to the original URL, e.g., `https://www.example.com`.
+- **Expected Response**: You will be redirected to the original URL, e.g., `https://www.google.com`.
 
 ---
 
 ### 3. **Retrieve Stats for a Short URL** (`GET /api/stats/<short_code>/`)
 
 ```bash
-curl -X GET http://localhost:8000/api/stats/mycustomcode/ \
+curl -X GET http://localhost:8000/api/stats/customcode/ \
     -H "Accept: application/json"
 ```
 
@@ -69,63 +69,6 @@ curl -X GET http://localhost:8000/api/stats/mycustomcode/ \
 - **Expected Response**:
     ```json
     {
-        "url_details": {
-            "original_url": "https://www.example.com",
-            "short_code": "mycustomcode",
-            "created_at": "2025-03-27T00:00:00Z",
-            "visit_count": 123,
-            "last_accessed": "2025-03-27T01:30:00Z"
-        },
-        "access_logs": [
-            {
-                "accessed_at": "2025-03-27T01:00:00Z",
-                "ip_address": "192.168.1.1",
-                "user_agent": "Mozilla/5.0",
-                "location": "New York"
-            },
-            {
-                "accessed_at": "2025-03-27T01:15:00Z",
-                "ip_address": "192.168.1.2",
-                "user_agent": "Mozilla/5.0",
-                "location": "Los Angeles"
-            }
-        ]
-    }
-    ```
-
----
-
-### Explanation of Each `curl` Command:
-
-1. Submit a Long URL and Receive a Short URL (POST /api/shorten/)
-
-curl -X POST http://localhost:8000/api/shorten/ \
-    -H "Content-Type: application/json" \
-    -d '{"original_url": "https://www.google.com", "custom_code": "customcode"}'
-Description: Submit a long URL and optionally provide a custom short code. The response will return a shortened URL.
-
-Expected Response:
-{
-    "short_url": "http://localhost:8000/short/customcode"
-}
-
-
-2. Redirect to the Original Long URL (GET /short/<short_code>/)
-
-curl -X GET http://localhost:8000/short/customcode/
-Description: Redirect to the original long URL using the provided short code.
-
-Expected Response: You will be redirected to the original URL, e.g., https://www.google.com.
-
-
-3. Retrieve Stats for a Short URL (GET /api/stats/<short_code>/)
-
-curl -X GET http://localhost:8000/api/stats/customcode/ \
-    -H "Accept: application/json"
-Description: Retrieve stats for a specific short URL, such as the access count and logs.
-
-Expected Response:
-{
     "url_details": {
         "original_url": "https://www.google.com",
         "short_code": "customcode",
@@ -140,5 +83,8 @@ Expected Response:
             "location": null,
             "accessed_at": "2025-03-27T10:07:30.037435Z"
         }
-    ]
-}
+        ]
+    }
+    ```
+
+---
