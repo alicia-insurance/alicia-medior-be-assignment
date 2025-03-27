@@ -1,46 +1,11 @@
 # URL Shortener - Alicia BE Assignment - Medior
 
-## Introduction
-Welcome to the **URL Shortener** assignment!
-
-Your task is to implement a **simple URL shortener API** using **Django** and **Django REST Framework (DRF)**. This application allows users to submit a long URL and receive a shortened URL. When a user accesses the short URL, they should be redirected to the original URL.  
-
-We've provided a **basic Django project setup** to save you time. Your job is to implement the required functionality using **best practices**.
-
----
-
-## Scenario
-Imagine you're building a **miniature version of bit.ly** or **TinyURL**. Users should be able to:  
-
-1. Submit a long URL via an API endpoint and receive a shortened version.  
-2. Use the short URL to be redirected to the original long URL.  
-3. (Bonus) View basic statistics about the shortened URL (e.g., number of times accessed).  
-
----
-
-## Assignment Requirements
-You need to implement the following features:  
-
-* **Shorten a URL**: Accept a long URL via an API endpoint and return a unique short URL.  
-* **Redirect to Original URL**: When a user visits the short URL, they should be redirected to the original long URL.  
-* **Validation**: Ensure the input is a valid URL.  
-* **Database Storage**: Store the original and shortened URLs in SQLite.  
-* **API Implementation**: Use Django REST Framework (DRF) to expose the necessary endpoints.  
-* **Code Structure & Best Practices**: Follow Django’s best practices for project structure, error handling, and API design.  
-
-### Bonus (Optional)
-* Track the number of times a short URL has been accessed.  
-* Implement rate limiting to prevent abuse.  
-* Allow users to specify a custom short URL (e.g., `https://yourshortener.com/mycustomlink`).  
-
----
-
 ## Project Setup & Installation
 
 **1. Clone the Repository**
 ```bash
-git clone https://github.com/your-org/url-shortener.git
-cd url-shortener
+git clone https://github.com/montecb/alicia-medior-be-assignment.git
+cd alicia-medior-be-assignmen
 ```
 
 **2. Create & Activate a Virtual Environment**
@@ -62,32 +27,118 @@ python manage.py runserver
 ```
 ## 5. API Endpoints
 
-| Method  | Endpoint              | Description |
-|---------|-----------------------|-------------|
-| `POST`  | `/api/shorten/`       | Submit a long URL and receive a short URL. |
-| `GET`   | `/short/<short_code>/` | Redirect to the original long URL. |
-| (Bonus) `GET`  | `/api/stats/<short_code>/` | Retrieve stats for a short URL (e.g., access count). |
+Certainly! Below are the sample `curl` commands for each endpoint you can add to your README file:
 
-## What We’re Evaluating
-* Code quality & structure
-* Django best practices
-* API design & error handling
-* Database modeling
-* Security considerations
-* Performance optimizations (if any)
+### 1. **Submit a Long URL and Receive a Short URL** (`POST /api/shorten/`)
 
-## Questions to Think About
-After submission, we may ask you some questions, such as:
-* How did you generate the short URL?
-* How would you scale this application for millions of users?
-* What security concerns exist with URL shorteners?
-* ...
+```bash
+curl -X POST http://localhost:8000/api/shorten/ \
+    -H "Content-Type: application/json" \
+    -d '{"original_url": "https://www.example.com", "custom_code": "mycustomcode"}'
+```
 
-## Submission Instructions
-* Fork this repository.
-* Implement your solution in a new branch.
-* Create a pull request (PR) with a summary of your implementation.
-* Be ready to discuss your decisions during the review!
+- **Description**: Submit a long URL and optionally provide a custom short code. The response will return a shortened URL.
+- **Expected Response**:
+    ```json
+    {
+        "short_url": "http://localhost:8000/short/mycustomcode"
+    }
+    ```
 
-## Good Luck & Have Fun!
-Happy coding! 😃 If you have any questions, feel free to reach out.
+---
+
+### 2. **Redirect to the Original Long URL** (`GET /short/<short_code>/`)
+
+```bash
+curl -X GET http://localhost:8000/short/mycustomcode/
+```
+
+- **Description**: Redirect to the original long URL using the provided short code.
+- **Expected Response**: You will be redirected to the original URL, e.g., `https://www.example.com`.
+
+---
+
+### 3. **Retrieve Stats for a Short URL** (`GET /api/stats/<short_code>/`)
+
+```bash
+curl -X GET http://localhost:8000/api/stats/mycustomcode/ \
+    -H "Accept: application/json"
+```
+
+- **Description**: Retrieve stats for a specific short URL, such as the access count and logs.
+- **Expected Response**:
+    ```json
+    {
+        "url_details": {
+            "original_url": "https://www.example.com",
+            "short_code": "mycustomcode",
+            "created_at": "2025-03-27T00:00:00Z",
+            "visit_count": 123,
+            "last_accessed": "2025-03-27T01:30:00Z"
+        },
+        "access_logs": [
+            {
+                "accessed_at": "2025-03-27T01:00:00Z",
+                "ip_address": "192.168.1.1",
+                "user_agent": "Mozilla/5.0",
+                "location": "New York"
+            },
+            {
+                "accessed_at": "2025-03-27T01:15:00Z",
+                "ip_address": "192.168.1.2",
+                "user_agent": "Mozilla/5.0",
+                "location": "Los Angeles"
+            }
+        ]
+    }
+    ```
+
+---
+
+### Explanation of Each `curl` Command:
+
+1. Submit a Long URL and Receive a Short URL (POST /api/shorten/)
+
+curl -X POST http://localhost:8000/api/shorten/ \
+    -H "Content-Type: application/json" \
+    -d '{"original_url": "https://www.google.com", "custom_code": "customcode"}'
+Description: Submit a long URL and optionally provide a custom short code. The response will return a shortened URL.
+
+Expected Response:
+{
+    "short_url": "http://localhost:8000/short/customcode"
+}
+
+
+2. Redirect to the Original Long URL (GET /short/<short_code>/)
+
+curl -X GET http://localhost:8000/short/customcode/
+Description: Redirect to the original long URL using the provided short code.
+
+Expected Response: You will be redirected to the original URL, e.g., https://www.google.com.
+
+
+3. Retrieve Stats for a Short URL (GET /api/stats/<short_code>/)
+
+curl -X GET http://localhost:8000/api/stats/customcode/ \
+    -H "Accept: application/json"
+Description: Retrieve stats for a specific short URL, such as the access count and logs.
+
+Expected Response:
+{
+    "url_details": {
+        "original_url": "https://www.google.com",
+        "short_code": "customcode",
+        "custom_code": "customcode",
+        "visit_count": 1,
+        "created_at": "2025-03-27T10:07:22.387446Z"
+    },
+    "access_logs": [
+        {
+            "ip_address": "127.0.0.1",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "location": null,
+            "accessed_at": "2025-03-27T10:07:30.037435Z"
+        }
+    ]
+}

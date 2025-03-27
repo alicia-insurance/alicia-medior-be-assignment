@@ -1,4 +1,5 @@
 import os
+import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -6,7 +7,7 @@ SECRET_KEY = "your_secret_key"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'testserver', 'localhost']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -56,6 +57,29 @@ DATABASES = {
     }
 }
 
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'url_shortener.throttling.URLCreationThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'url_creation': '10/minute',
+    },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-cache',
+    }
+}
+
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -65,3 +89,10 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+BASE_URL = 'http://127.0.0.1:8000'
+
+if 'test' in sys.argv:
+    REST_FRAMEWORK = {
+        'DEFAULT_THROTTLE_CLASSES': [],
+    }
