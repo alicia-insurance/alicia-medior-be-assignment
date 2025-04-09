@@ -39,7 +39,7 @@ You need to implement the following features:
 
 **1. Clone the Repository**
 ```bash
-git clone https://github.com/your-org/url-shortener.git
+git clone https://github.com/your-org/alicia-medior-be-assignment.git
 cd url-shortener
 ```
 
