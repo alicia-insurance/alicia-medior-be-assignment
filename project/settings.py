@@ -16,8 +16,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    'drf_yasg',
     "url_shortener",
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': None,
+    'USE_SESSION_AUTH': False,
+    'DEFAULT_INFO': 'url_shortener_project.urls.schema_view',
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
