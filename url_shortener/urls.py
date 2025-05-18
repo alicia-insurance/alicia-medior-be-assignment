@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import ShortURLCreateAPIView, redirect_short_url
 
 urlpatterns = [
-    # Add your app's URL patterns here
+    path('api/shorten/', ShortURLCreateAPIView.as_view(), name='api-shorten'),
+    path('<str:short_code>/', redirect_short_url, name='redirect'),
 ]
