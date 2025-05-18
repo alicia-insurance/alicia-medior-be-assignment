@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.throttling import AnonRateThrottle
 
 from django.shortcuts import redirect
+from url_shortener.auth import APIKeyAuthentication
 from url_shortener.models import ShortURL
 from url_shortener.serializers import ShortURLSerializer
 
@@ -13,6 +14,8 @@ from url_shortener.throttles import BurstRateThrottle
 
 class ShortenURLView(APIView):
     throttle_classes = [AnonRateThrottle]
+    authentication_classes = [APIKeyAuthentication]
+    
     def post(self, request, *args, **kwargs):
         serializer = ShortURLSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -29,6 +32,8 @@ class ShortenURLView(APIView):
 
 class ShortURLStatsView(APIView):
     throttle_classes = [AnonRateThrottle]
+    authentication_classes = [APIKeyAuthentication]
+
     def get(self, request, short_code, *args, **kwargs):
         try:
             print(f"Fetching stats for short code: {short_code}")
@@ -44,6 +49,7 @@ class ShortURLStatsView(APIView):
 
 class RedirectShortURLView(APIView):
     throttle_classes = [BurstRateThrottle]
+    authentication_classes = []
 
     def get(self, request, short_code, *args, **kwargs):
         try:

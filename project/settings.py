@@ -1,5 +1,8 @@
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -86,6 +89,9 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '10/minute',   # 10 requests per minute for anonymous users
-        'burst': '5/minute', # 20 requests per minute for burst traffic
-    }
+        'burst': '20/minute', # 20 requests per minute for burst traffic
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'url_shortener.auth.APIKeyAuthentication',
+    ]
 }
