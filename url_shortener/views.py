@@ -1,32 +1,25 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.versioning import URLPathVersioning
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from url_shortener.models import ShortURL
+from url_shortener.serializers import ShortURLSerializer
+
+from django.conf import settings
 
 class ShortenURLView(APIView):
     def post(self, request, *args, **kwargs):
-        version = request.version
-        data = request.data
-        original_url = data.get("original_url", "http://alicia.insure")
-        custom_alias = data.get("custom_alias", None)
-        # TODO
-        # need to validate the custom_alias if provided
-        # create a unique short_alias if not provided
-        # use API versioning
-        # use serializers for better validation
-        
-        validator = URLValidator()
-        try:
-            validator(original_url)
-        except ValidationError:
-            return Response({"error": "Invalid URL"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({
-            "short_url": f"http://localhost:8000/short/{custom_alias}/"
-        }, status=status.HTTP_201_CREATED)
+        serializer = ShortURLSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        short_alias = serializer.validated_data.get("short_alias", None)
+        print(f"Short alias provided: {short_alias}")
+        if not short_alias:
+            short_alias = ShortURL.generate_short_alias(version=request.version)
+        short_url = serializer.save(short_alias=short_alias, is_active=True)
+        return Response(
+            {"short_url": f"{settings.SITE_DOMAIN}/short/{short_url.short_alias}/"},
+            status=status.HTTP_201_CREATED
+        )
 
 class ShortURLStatsView(APIView):
     def get(self, request, short_code, *args, **kwargs):

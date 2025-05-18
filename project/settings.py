@@ -2,11 +2,21 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = "your_secret_key"
 
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your_secret_key')
 
-ALLOWED_HOSTS = []
+SITE_DOMAIN = os.environ.get('SITE_DOMAIN', default='http://localhost:8000')
+
+API_VERSION = os.environ.get('API_VERSION', default='v1')
+
+API_KEY = os.environ.get('API_KEY', default='your_api_key')
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = int(os.environ.get('DEBUG', default=0))
+DEBUG_PROPAGATE_EXCEPTIONS = int(os.environ.get('DEBUG', default=0))
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
