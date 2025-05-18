@@ -19,7 +19,7 @@
     - Response 
         - Success (201)
             - custom URL (string)
-        - Error/Failed (500 or 400)
+        - Error/Failed/Throttled (500, 400, 404, 429)
             - error message 
     - Rate limiting and logging
 
@@ -57,3 +57,15 @@
 - access_count: Counter for URL visits
 - created_at: Timestamp of creation  
 - is_active: Boolean flag for soft Delete
+
+
+## Hashing Algorithm for URL shortner
+
+For an 8-character code, consider Base62 encoding (26 uppercase, 26 lowercase, 10 digits=62). 
+This approach widens the keyspace and lowers collision risk while keeping URLs concise.
+
+
+## References
+
+[Wikipedia](https://wikipedia.org/wiki/URL_shortening).
+[ByteByteGo](https://bytebytego.com/courses/system-design-interview/design-a-url-shortener)

@@ -80,4 +80,12 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ('v1',),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'url_shortener.throttles.BurstRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',   # 10 requests per minute for anonymous users
+        'burst': '5/minute', # 20 requests per minute for burst traffic
+    }
 }
