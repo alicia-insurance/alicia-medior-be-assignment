@@ -1,6 +1,10 @@
 from django.urls import path
-from . import views
+from url_shortener.views import ShortenURLView, RedirectShortURLView, ShortURLStatsView
 
 urlpatterns = [
-    # Add your app's URL patterns here
+    path("shorten/", ShortenURLView.as_view(), name="shorten-url"),
+    path("short/<short_code>/", RedirectShortURLView.as_view(), name="redirect-url"),
+    path(
+        "short/<short_code>/stats/", ShortURLStatsView.as_view(), name="short-url-stats"
+    ),
 ]
