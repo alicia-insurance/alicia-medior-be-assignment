@@ -4,5 +4,5 @@ from .models import ShortURL
 class ShortURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShortURL
-        fields = ['id', 'original_url', 'short_code', 'created_at']
-        read_only_fields = ['short_code', 'created_at']
+        fields = ['original_url', 'short_code', 'created_at', 'access_count']
+        read_only_fields = ['short_code', 'created_at', 'access_count']
