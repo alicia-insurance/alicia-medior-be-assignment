@@ -13,6 +13,7 @@ class ShortenURLView(APIView):
         serializer.is_valid(raise_exception=True)
         short_alias = serializer.validated_data.get("short_alias", None)
         print(f"Short alias provided: {short_alias}")
+        # If no custom alias is provided, generate a short alias
         if not short_alias:
             short_alias = ShortURL.generate_short_alias(version=request.version)
         short_url = serializer.save(short_alias=short_alias, is_active=True)
@@ -23,28 +24,29 @@ class ShortenURLView(APIView):
 
 class ShortURLStatsView(APIView):
     def get(self, request, short_code, *args, **kwargs):
-        version = request.version
-        # TODO
-        # fetch the ShortURL object by short_code
-        # return the short_code, access_count and created_at
-
-        # dummy response for now
-        return Response({
-            "access_count": 42,
-            "created_at": "2024-01-01T00:00:00Z"
-        }, status=status.HTTP_200_OK)
+        try:
+            print(f"Fetching stats for short code: {short_code}")
+            obj = ShortURL.objects.get(short_alias=short_code)
+            return Response({
+                "short_code": obj.short_alias,
+                "access_count": obj.access_count,
+                "created_at": obj.created_at.strftime("%Y-%m-%d")
+            }, status=status.HTTP_200_OK)
+        except ShortURL.DoesNotExist:
+            print(f"Short code {short_code} not found")
+            return Response({"error": "Short code not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class RedirectShortURLView(APIView):
     def get(self, request, short_code, *args, **kwargs):
-        # TODO
-        # fetch the ShortURL object by short_code
-        # optionally, validate if the short_code is active or not
-        # increment the access_count
-        # redirect to the original_url
         try:
+            print(f"Attempting to redirect using short code: {short_code}")
             obj = ShortURL.objects.get(short_alias=short_code)
             if not obj.is_active:
+                print(f"Short code {short_code} is inactive")
                 return Response({"error": "Short code is inactive"}, status=status.HTTP_404_NOT_FOUND)
+            obj.increment_access_count()
+            print(f"Redirecting to: {obj.original_url}")
         except ShortURL.DoesNotExist:
+            print(f"Short code {short_code} not found")
             return Response({"error": "Short code not found"}, status=status.HTTP_404_NOT_FOUND)
         return redirect(obj.original_url)
