@@ -41,7 +41,7 @@
     - Rate Limiting
     - Logging
     - Response
-        - Success (301)
+        - Success (302, temporary)
             - Redirect to original URL 
         - Error/Failed (500 or 400)
             - error message

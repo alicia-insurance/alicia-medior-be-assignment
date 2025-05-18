@@ -2,5 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Add your app's URL patterns here
+    path("<str:version>/shorten/", views.ShortenURLView.as_view(), name="shorten-url"),
+    path("<str:version>/stats/<str:short_code>/", views.ShortURLStatsView.as_view(), name="short-url-stats"),
+    path("short/<str:short_code>/", views.RedirectShortURLView.as_view(), name="redirect-short-url"),
 ]
