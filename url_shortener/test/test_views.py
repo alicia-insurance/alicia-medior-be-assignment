@@ -8,11 +8,13 @@ from url_shortener.models import ShortURL
 
 TEST_API_KEY = "test_api_key"
 
+
 @override_settings(API_KEY=TEST_API_KEY)
 class ShortenURLAPITest(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.auth = {"HTTP_X_API_KEY": TEST_API_KEY}
+
     def test_shorten_url_success(self):
         url = reverse("shorten-url", kwargs={"version": "v1"})
         data = {"original_url": "http://alicia.insure"}
@@ -33,12 +35,11 @@ class ShortenURLAPITest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("myalias", response.data["short_url"])
 
+
 class RedirectShortURLTest(TestCase):
     def setUp(self):
         self.obj = ShortURL.objects.create(
-            original_url="http://alicia.insure",
-            short_alias="redir",
-            is_active=True
+            original_url="http://alicia.insure", short_alias="redir", is_active=True
         )
         self.client = APIClient()
 
@@ -55,19 +56,20 @@ class RedirectShortURLTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+
 @override_settings(API_KEY=TEST_API_KEY)
 class ShortURLStatsTest(TestCase):
     def setUp(self):
         self.obj = ShortURL.objects.create(
-            original_url="http://alicia.insure",
-            short_alias="redir",
-            is_active=True
+            original_url="http://alicia.insure", short_alias="redir", is_active=True
         )
         self.client = APIClient()
         self.auth = {"HTTP_X_API_KEY": TEST_API_KEY}
 
     def test_stats(self):
-        url = reverse("short-url-stats", kwargs={"version": "v1", "short_code": "redir"})
+        url = reverse(
+            "short-url-stats", kwargs={"version": "v1", "short_code": "redir"}
+        )
         response = self.client.get(url, **self.auth)
         self.assertEqual(response.status_code, 200)
         self.assertIn("access_count", response.data)

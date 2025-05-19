@@ -3,14 +3,25 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from .models import ShortURL
 
+
 class ShortURLSerializer(serializers.ModelSerializer):
     custom_alias = serializers.CharField(
-        source="short_alias", required=False, allow_blank=True, max_length=8, help_text="Custom short alias for the URL, max 8 characters."
+        source="short_alias",
+        required=False,
+        allow_blank=True,
+        max_length=8,
+        help_text="Custom short alias for the URL, max 8 characters.",
     )
 
     class Meta:
         model = ShortURL
-        fields = ["original_url", "custom_alias", "created_at", "access_count", "is_active"]
+        fields = [
+            "original_url",
+            "custom_alias",
+            "created_at",
+            "access_count",
+            "is_active",
+        ]
         read_only_fields = ["created_at", "access_count", "is_active"]
 
     def validate_custom_alias(self, value):

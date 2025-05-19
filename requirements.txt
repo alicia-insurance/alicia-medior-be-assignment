@@ -1,3 +1,4 @@
-Django>=4.2,<4.3
-djangorestframework
-python-dotenv
+Django==5.2.1
+djangorestframework==3.16.0
+python-dotenv==1.1.0
+pre-commit==4.2.0

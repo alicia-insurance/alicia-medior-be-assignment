@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "8eb6e2b2-3e89-41ec-85d1-5d9788773df9",
+		"name": "URL Shortener",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18997411"
+	},
+	"item": [
+		{
+			"name": "Shorten a URL",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "h2m5H7dW95Lxk_1EwMZ_Gd1nbwIvKQKrC3OjL9Ey4cg",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "original_url",
+							"value": "https://www.django-rest-framework.org/api-guide/versioning/#urlpathversioning",
+							"type": "text"
+						},
+						{
+							"key": "custom_alias",
+							"value": "doc8558",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{SITE_DOMAIN}}/api/{{VERSION}}/shorten/",
+					"host": [
+						"{{SITE_DOMAIN}}"
+					],
+					"path": [
+						"api",
+						"{{VERSION}}",
+						"shorten",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Stats",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "h2m5H7dW95Lxk_1EwMZ_Gd1nbwIvKQKrC3OjL9Ey4cg",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SITE_DOMAIN}}/api/{{VERSION}}/stats/bytebyte",
+					"host": [
+						"{{SITE_DOMAIN}}"
+					],
+					"path": [
+						"api",
+						"{{VERSION}}",
+						"stats",
+						"bytebyte"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SITE_DOMAIN",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "VERSION",
+			"value": "v1",
+			"type": "string"
+		}
+	]
+}
