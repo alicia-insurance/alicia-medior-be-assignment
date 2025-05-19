@@ -1,12 +1,26 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = "your_secret_key"
 
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your_secret_key')
 
-ALLOWED_HOSTS = []
+SITE_DOMAIN = os.environ.get('SITE_DOMAIN', default='http://localhost:8000')
+
+API_VERSION = os.environ.get('API_VERSION', default='v1')
+
+API_KEY = os.environ.get('API_KEY', default='your_api_key')
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = int(os.environ.get('DEBUG', default=0))
+DEBUG_PROPAGATE_EXCEPTIONS = int(os.environ.get('DEBUG', default=0))
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -65,3 +79,20 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ('v1',),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'url_shortener.throttles.BurstRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',  # 10 requests per minute for anonymous users
+        'burst': '20/minute',  # 20 requests per minute for burst traffic
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'url_shortener.auth.APIKeyAuthentication',
+    ],
+}
