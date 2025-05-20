@@ -53,8 +53,9 @@ class URLShortenerView(APIView):
         serializer = ShortURLSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Check if URL already exists
         original_url = serializer.validated_data['original_url']
+        custom_alias = request.data.get('custom_alias', None)
+
         existing_url = ShortURL.objects.filter(original_url=original_url).first()
 
         if existing_url:
@@ -63,9 +64,23 @@ class URLShortenerView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # If custom alias is provided, check if it's already taken
+        if custom_alias:
+            if ShortURL.objects.filter(short_alias=custom_alias).exists():
+                return Response(
+                    {"error": ERROR_MESSAGES['CUS_URL_ALREADY_EXISTS_ERROR']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            short_alias = custom_alias
+            is_custom_url = True
+        else:
+            short_alias = generate_unique_alias()
+            is_custom_url = False
+
         short_url = ShortURL.objects.create(
-            original_url=serializer.validated_data['original_url'],
-            short_alias=generate_unique_alias()
+            original_url= serializer.validated_data['original_url'],
+            short_alias= short_alias,
+            is_custom_url=is_custom_url
         )
         return Response(
             ShortURLSerializer(short_url).data,

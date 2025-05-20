@@ -7,6 +7,7 @@ class ShortURL(models.Model):
     access_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    is_custom_url = models.BooleanField(default=False)
     last_accessed = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
