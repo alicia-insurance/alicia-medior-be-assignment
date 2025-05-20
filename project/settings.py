@@ -16,7 +16,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "url_shortener",
+    'url_shortener',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -65,3 +66,16 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',  # Limit anonymous users to 100 requests per day
+        'user': '1000/day',  # Limit authenticated users to 1000 requests per day
+        'short_url_create': '50/day',  # Custom rate for URL creation
+        'redirect': '200/hour',  # Custom rate for URL redirects
+    }
+}
