@@ -12,43 +12,19 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework.exceptions import ValidationError
 
-@swagger_auto_schema(
-        operation_description="Create a shortened URL from a long URL",
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            required=['original_url'],
-            properties={
-                'original_url': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    format=openapi.FORMAT_URI,
-                    description="The original URL to be shortened"
-                )
-            }
-        ),
-        responses={
-            201: ShortURLSerializer,
-            400: openapi.Response(
-                description="Bad Request",
-                examples={
-                    "application/json": {
-                        "error": "URL already exists."
-                    }
-                }
-            ),
-            429: openapi.Response(
-                description="Too Many Requests",
-                examples={
-                    "application/json": {
-                        "detail": "Request was throttled."
-                    }
-                }
-            )
-        }
-    )
 
 class URLShortenerView(APIView):
 
     throttle_classes = [ShortURLCreateThrottle]
+
+    @swagger_auto_schema(
+        operation_description="Create a shortened URL",
+        request_body=ShortURLSerializer,
+        responses={
+            201: ShortURLSerializer,
+            400: "Bad Request"
+        }
+    )
 
     def post(self, request):
         serializer = ShortURLSerializer(data=request.data)
@@ -101,6 +77,14 @@ class URLStatsView(APIView):
     """Handle URL statistics operations"""
     throttle_classes = [RedirectThrottle]
 
+    @swagger_auto_schema(
+        operation_description="Get URL statistics",
+        responses={
+            200: URLStatsSerializer,
+            404: "URL not found"
+        }
+    )
+
     def get(self, request, short_code):
         try:
             short_url_obj = get_object_or_404(ShortURL, short_alias=short_code)
@@ -120,6 +104,14 @@ class URLStatsView(APIView):
 class URLRedirectView(APIView):
     """Handle URL redirection operations"""
     throttle_classes = [RedirectThrottle]
+
+    @swagger_auto_schema(
+        operation_description="Redirect to original URL",
+        responses={
+            302: "Redirect to original URL",
+            404: "URL not found"
+        }
+    )
 
     def get(self, request, short_code):
         try:
