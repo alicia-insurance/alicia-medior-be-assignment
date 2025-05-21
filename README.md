@@ -91,3 +91,6 @@ After submission, we may ask you some questions, such as:
 
 ## Good Luck & Have Fun!
 Happy coding! 😃 If you have any questions, feel free to reach out.
+
+## Developer Documentation
+For detailed information about development guidelines, coding standards, and project structure, please refer to our [Developer Guide](DEV-GUIDE.md).
