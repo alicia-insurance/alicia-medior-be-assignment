@@ -25,7 +25,7 @@ RUN python manage.py collectstatic --noinput || true
 RUN python manage.py migrate
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8001
 
 # Run server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]

@@ -1,0 +1,58 @@
+- scenario: "Test creating short URL"
+  type: "POST"
+  endpoint: "/api/shorten/"
+  request:
+    body:
+      original_url: "https://www.example.com/very/long/url"
+  expected_response:
+    status_code: 201
+    contains:
+      - "short_alias"
+      - "original_url"
+
+- scenario: "Test custom alias creation"
+  type: "POST"
+  endpoint: "/api/shorten/"
+  request:
+    body:
+      original_url: "https://www.example.com/custom"
+      custom_alias: "custom123"
+  expected_response:
+    status_code: 201
+    match:
+      short_alias: "custom123"
+
+- scenario: "Test invalid URL format"
+  type: "POST"
+  endpoint: "/api/shorten/"
+  request:
+    body:
+      original_url: "not-a-valid-url"
+  expected_response:
+    status_code: 400
+    match:
+      error: "Enter a valid URL."
+- scenario: "Test empty URL"
+  type: "POST"
+  endpoint: "/api/shorten/"
+  request:
+    body:
+      original_url: ""
+  expected_response:
+    status_code: 400
+    match:
+      error: "This field may not be blank."
+
+- scenario: "Test URL statistics"
+  type: "GET"
+  endpoint: "/api/stats/{short_code}/"
+  expected_response:
+    status_code: 200
+    match:
+      access_count: 5
+
+- scenario: "Test URL redirect"
+  type: "GET"
+  endpoint: "/api/{short_code}/"
+  expected_response:
+    status_code: 302

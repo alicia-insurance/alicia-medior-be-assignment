@@ -10,6 +10,7 @@ from .constants.messages import ERROR_MESSAGES
 from .utils.throttling import ShortURLCreateThrottle, RedirectThrottle
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from rest_framework.exceptions import ValidationError
 
 @swagger_auto_schema(
         operation_description="Create a shortened URL from a long URL",
@@ -51,7 +52,16 @@ class URLShortenerView(APIView):
 
     def post(self, request):
         serializer = ShortURLSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            error_messages = []
+            for field, messages in e.detail.items():
+                error_messages.extend(messages)
+            return Response(
+                {"error": " ".join(str(msg) for msg in error_messages)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         original_url = serializer.validated_data['original_url']
         custom_alias = request.data.get('custom_alias', None)
