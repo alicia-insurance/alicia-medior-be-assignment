@@ -53,6 +53,6 @@
 
 - scenario: "Test URL redirect"
   type: "GET"
-  endpoint: "/api/{short_code}/"
+  endpoint: "/short/{short_code}"
   expected_response:
     status_code: 302

@@ -73,8 +73,10 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'short_url_create': '',  # Custom rate for URL creation
-        'redirect': '',  # Custom rate for URL redirects
-        'stats': '',  # Custom rate for URL stats
+        'anon': '100/hour',  # Limit anonymous users to 100 requests per day
+        'user': '500/hour',  # Limit authenticated users to 500 requests per day
+        'short_url_create': '100/second',  # Custom rate for URL creation
+        'redirect': '10/second',  # Custom rate for URL redirects
+        'stats': '10/second',  # Custom rate for URL redirects
     }
 }

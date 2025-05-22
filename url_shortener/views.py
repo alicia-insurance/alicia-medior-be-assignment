@@ -7,11 +7,10 @@ from .models import ShortURL
 from .serializers import ShortURLSerializer, URLStatsSerializer
 from .utils.validators import generate_unique_alias
 from .constants.messages import ERROR_MESSAGES
-from .utils.throttling import ShortURLCreateThrottle, RedirectThrottle, URLStatsThrottle
+from url_shortener.utils.throttling import ShortURLCreateThrottle, RedirectThrottle, URLStatsThrottle
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework.exceptions import ValidationError
-
 
 class URLShortenerView(APIView):
 
