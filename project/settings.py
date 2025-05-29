@@ -16,7 +16,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    'rest_framework.authtoken',
     "url_shortener",
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -30,6 +32,22 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "project.urls"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'url_shortener.pagination.CustomShortURLPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '1000/day',   # Override for individual views
+    },
+}
+
 
 TEMPLATES = [
     {
