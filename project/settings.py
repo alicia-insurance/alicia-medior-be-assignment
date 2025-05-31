@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "url_shortener",
+    "url_shortener.apps.UrlShortenerConfig",
 ]
 
 MIDDLEWARE = [
@@ -65,3 +65,5 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+
